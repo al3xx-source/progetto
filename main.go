@@ -21,16 +21,19 @@ func main() {
     http.HandleFunc("/", homeHandler)
     http.HandleFunc("/tentativo", tentativoHandler)
 
-    // Prendi la porta da Render
+    // Ottieni la porta dal sistema, usando la variabile di ambiente "PORT"
     port := os.Getenv("PORT")
     if port == "" {
         port = "8080" // Imposta una porta di fallback per il locale
     }
 
-    // Avvia il server
+    // Avvia il server sulla porta configurata
     fmt.Printf("Il gioco è avviato su http://localhost:%s\n", port)
     http.ListenAndServe(":"+port, nil)
 }
+
+// Gli altri handler (homeHandler, tentativoHandler) restano invariati
+
 
 // Gli altri handler (homeHandler, tentativoHandler) restano invariati
 
