@@ -38,69 +38,61 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		<style>
 			body {
 				font-family: 'Arial', sans-serif;
-				background: url('https://www.w3schools.com/w3images/forest.jpg') no-repeat center center fixed;
-				background-size: cover;
-				color: white;
+				background-color: #f4f4f9;
+				color: #333;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				height: 100vh;
 				margin: 0;
-				font-size: 1.2em;
 			}
 			.container {
 				text-align: center;
-				background-color: rgba(0, 0, 0, 0.6);
-				padding: 30px;
-				border-radius: 10px;
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 				width: 100%;
-				max-width: 450px;
+				max-width: 400px;
 			}
 			h1 {
-				font-size: 2.5em;
-				color: #ffeb3b;
+				font-size: 2em;
+				color: #2c3e50;
 			}
 			form {
 				margin-top: 20px;
 			}
 			input[type="number"] {
-				padding: 12px;
-				font-size: 1.5em;
+				padding: 10px;
+				font-size: 1.2em;
 				width: 80%;
-				border: 1px solid #fff;
-				border-radius: 8px;
-				margin-top: 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
 			}
 			button {
-				padding: 12px 20px;
+				padding: 10px 20px;
 				font-size: 1.2em;
 				border: none;
-				border-radius: 8px;
-				background-color: #4CAF50;
+				border-radius: 5px;
+				background-color: #3498db;
 				color: white;
 				cursor: pointer;
-				margin-top: 15px;
+				margin-top: 10px;
 			}
 			button:hover {
-				background-color: #45a049;
+				background-color: #2980b9;
 			}
 			a {
 				display: inline-block;
 				margin-top: 20px;
-				color: #ffeb3b;
+				color: #3498db;
 				text-decoration: none;
-				font-size: 1.2em;
+				font-size: 1.1em;
 			}
 			a:hover {
 				text-decoration: underline;
 			}
 		</style>
-		<script>
-			function playSound(file) {
-				var audio = new Audio(file);
-				audio.play();
-			}
-		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -108,7 +100,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 			<p>Prova a indovinare il numero tra 0 e 99.</p>
 			<form action="/tentativo" method="post">
 				<input type="number" id="tentativo" name="tentativo" required>
-				<button type="submit" onclick="playSound('click-sound.mp3')">Invia</button>
+				<button type="submit">Invia</button>
 			</form>
 		</div>
 	</body>
@@ -129,16 +121,12 @@ func tentativoHandler(w http.ResponseWriter, r *http.Request) {
 	count++
 
 	var messaggio string
-	var soundFile string
 	if tentativo < numeroGenerato {
 		messaggio = "Troppo basso! Riprova!"
-		soundFile = "error-sound.mp3"
 	} else if tentativo > numeroGenerato {
 		messaggio = "Troppo alto! Riprova!"
-		soundFile = "error-sound.mp3"
 	} else {
 		messaggio = fmt.Sprintf("Hai indovinato in %d tentativi!", count)
-		soundFile = "success-sound.mp3"
 		numeroGenerato = rand.Intn(100) // Nuovo numero generato per una nuova partita
 		count = 0                       // Resetta il contatore dei tentativi
 	}
@@ -154,61 +142,51 @@ func tentativoHandler(w http.ResponseWriter, r *http.Request) {
 		<style>
 			body {
 				font-family: 'Arial', sans-serif;
-				background: url('https://www.w3schools.com/w3images/forest.jpg') no-repeat center center fixed;
-				background-size: cover;
-				color: white;
+				background-color: #f4f4f9;
+				color: #333;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				height: 100vh;
 				margin: 0;
-				font-size: 1.2em;
 			}
 			.container {
 				text-align: center;
-				background-color: rgba(0, 0, 0, 0.6);
-				padding: 30px;
-				border-radius: 10px;
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 8px;
+				box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 				width: 100%;
-				max-width: 450px;
+				max-width: 400px;
 			}
 			h1 {
-				font-size: 2.5em;
-				color: #ffeb3b;
+				font-size: 2em;
+				color: #2c3e50;
 			}
 			p {
-				font-size: 1.3em;
+				font-size: 1.2em;
 				margin-top: 20px;
 			}
 			a {
 				display: inline-block;
 				margin-top: 20px;
-				color: #ffeb3b;
+				color: #3498db;
 				text-decoration: none;
-				font-size: 1.2em;
+				font-size: 1.1em;
 			}
 			a:hover {
 				text-decoration: underline;
 			}
 		</style>
-		<script>
-			function playSound(file) {
-				var audio = new Audio(file);
-				audio.play();
-			}
-		</script>
 	</head>
-	<body onload="playSound('{{.SoundFile}}')">
+	<body>
 		<div class="container">
 			<h1>Gioco del Numero</h1>
-			<p>{{.Message}}</p>
+			<p>{{.}}</p>
 			<a href="/">Prova un altro numero!</a>
 		</div>
 	</body>
 	</html>
 	`)
-	tmpl.Execute(w, map[string]interface{}{
-		"Message":   messaggio,
-		"SoundFile": soundFile,
-	})
+	tmpl.Execute(w, messaggio)
 }
